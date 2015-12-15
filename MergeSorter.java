@@ -23,11 +23,16 @@ public class MergeSorter {
 		System.out.println("Unsorted Array:");
 		printArr(myArray);
 		
-		mergeSort(myArray, 0, myArray.length - 1);
+		mergeSort(myArray);
 		
 		System.out.println("Sorted Array:");
 		printArr(myArray);
 		
+	}
+	
+	//overloaded method - public interface
+	public static void mergeSort(int[] arr){
+		mergeSort(arr, 0, arr.length-1);
 	}
 	
 	private static void mergeSort(int[] arr, int left, int right){
@@ -38,8 +43,6 @@ public class MergeSorter {
 			mergeSort(arr, center+1, right);
 			
 			merge(arr, left, center, right);
-			
-			printArr(arr);
 		}
 	}
 	
