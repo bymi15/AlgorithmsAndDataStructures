@@ -1,5 +1,8 @@
-import java.util.Random;
+//Mergesort algorithm
+//Time-complexity -> best/worst case: O(nlogn)
+//Space-complexity -> O(n)
 
+import java.util.Random;
 
 public class MergeSorter {
 
