@@ -1,5 +1,8 @@
 import java.util.Random;
 
+//Quicksort algorithm
+//Time-complexity -> average case: O(nlogn), worst case: O(n^2)
+//Space-complexity -> average case: O(logn), worst case: O(n)
 
 public class QuickSorter {
 	// methods used to test the algorithm
