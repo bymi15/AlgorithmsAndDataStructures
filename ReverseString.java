@@ -2,7 +2,7 @@
 //Time-complexity -> O(n)
 //Space-complexity -> O(n)
 
-import java.io.Scanner;
+import java.util.Scanner;
 
 public class ReverseString{
 
