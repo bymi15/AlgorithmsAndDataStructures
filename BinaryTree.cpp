@@ -19,6 +19,75 @@ struct Node
 	Node* right;
 };
 
+Node* find(int x, Node* tree) {
+	if (tree == nullptr) {
+		return nullptr;
+	}
+	if (x < tree->data) {
+		return find(x, tree->left);
+	}
+	else if (x > tree->data) {
+		return find(x, tree->right);
+	}
+	else {
+		return tree;
+	}
+}
+
+Node* findMinimum(Node* tree) {
+	if (tree == nullptr) {
+		return nullptr;
+	}
+	else if (tree->left == nullptr) {
+		return tree;
+	}
+	else {
+		return findMinimum(tree->left);
+	}
+}
+
+Node* findMaximum(Node* tree) {
+	if (tree == nullptr) {
+		return nullptr;
+	}
+	else if (tree->right == nullptr) {
+		return tree;
+	}
+	else {
+		return findMaximum(tree->right);
+	}
+}
+
+Node* findSuccessor(Node* root, int n) {
+	if (root == nullptr) {
+		return nullptr;
+	}
+
+	Node* node = find(n, root);
+
+	if (node->right != nullptr) {
+		return findMinimum(node->right);
+	}
+	//no right sub-tree
+	else {
+		Node* successor = nullptr;
+		Node* ancestor = root;
+		while (ancestor != nullptr) {
+			if (node->data < ancestor->data) {
+				successor = ancestor;
+				ancestor = ancestor->left;
+			}
+			else if(node->data > ancestor->data) {
+				ancestor = ancestor->right;
+			}
+			else {
+				break;
+			}
+		}
+		return successor;
+	}
+}
+
 void insert(Node* node, Node* tree) {
 	int val = node->data;
 	if (val > tree->data) {
@@ -37,6 +106,39 @@ void insert(Node* node, Node* tree) {
 			insert(node, tree->left);
 		}
 	}
+}
+
+void insert(int x, Node* tree) {
+	insert(new Node(x), tree);
+}
+
+Node* remove(int x, Node* tree) {
+	if (tree == nullptr) {
+		return nullptr;
+	}
+	else if (x < tree->data) {
+		tree->left = remove(x, tree->left);
+	}
+	else if (x > tree->data) {
+		tree->right = remove(x, tree->right);
+	}
+	else {
+		//has two children
+		if (tree->left != nullptr && tree->right != nullptr) {
+			Node* succ = findSuccessor(tree, tree->data);
+			if (succ == nullptr) return false;
+			tree->data = succ->data;
+			tree->right = remove(succ->data, tree->right);
+		}
+		//has one or no child
+		else {
+			Node* temp = tree;
+			tree = (tree->left != nullptr) ? tree->left : tree->right;
+			delete temp;
+		}
+	}
+	return tree;
+	
 }
 
 void inOrderTraversal(Node* root) {
@@ -78,17 +180,24 @@ void postOrderTraversal(Node* root) {
 	std::cout << root->data << " ";
 }
 
+//testing
 int main() {
 	Node* root = new Node();
 	root->data = 4;
-	insert(new Node(3, nullptr, nullptr), root);
-	insert(new Node(7, nullptr, nullptr), root);
-	insert(new Node(6, nullptr, nullptr), root);
-	insert(new Node(10, nullptr, nullptr), root);
-	insert(new Node(9, nullptr, nullptr), root);
+	insert(3, root);
+	insert(7, root);
+	insert(6, root);
+	insert(10, root);
+	insert(9, root);
 
 	inOrderTraversal(root);
+	
+	remove(4, root);
+	
+	inOrderTraversal(root);
+	
 	std::cout << std::endl;
+	delete root;
 	system("PAUSE");
 	return 0;
 }
